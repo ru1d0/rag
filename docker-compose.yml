@@ -1,0 +1,23 @@
+services:
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  chatbot:
+    build: ./app
+    container_name: chatbot
+    volumes:
+      - ./app/src:/app/src
+      - ./data:/data
+    tty: true
+    stdin_open: true
+    depends_on:
+      - ollama
+
+volumes:
+  ollama_data:
