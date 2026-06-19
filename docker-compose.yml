@@ -1,23 +1,23 @@
 services:
 
   ollama:
-    image: ollama/ollama
     container_name: ollama
+    image: ollama/ollama
     ports:
       - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
 
   chatbot:
-    build: ./app
     container_name: chatbot
+    build: ./backend
+    ports:
+      - "8000:8000"
     volumes:
-      - ./app/src:/app/src
-      - ./data:/data
-    tty: true
-    stdin_open: true
-    depends_on:
-      - ollama
+      - ./backend:/app
 
-volumes:
-  ollama_data:
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app

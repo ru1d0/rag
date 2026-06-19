@@ -4,3 +4,6 @@ langchain-ollama
 langchain-chroma
 chromadb
 pypdf
+
+fastapi
+uvicorn

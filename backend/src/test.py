@@ -100,13 +100,14 @@ def ejecutar_chatbot():
         # ==========================
         # Consultar LLM
         # ==========================
-
-        response = chain.invoke({
+        for chunk in chain.stream({
             "input": prompt_rag,
             "chat_history": chat_history
-        })
-
-        respuesta = limpiar_texto(response.content)
+        }):
+            texto = chunk.content or ""
+            print(texto, end="", flush=True)
+            respuesta += texto
+            respuesta = limpiar_texto(response.content)
 
         chat_history.append(
             HumanMessage(content=user_input)
