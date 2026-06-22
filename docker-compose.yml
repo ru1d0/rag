@@ -5,6 +5,8 @@ services:
     image: ollama/ollama
     ports:
       - "11434:11434"
+    volumes:
+      - ollama_data:/data
 
   chatbot:
     container_name: chatbot
@@ -13,6 +15,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - ./data:/data
 
   frontend:
     container_name: frontend
@@ -21,3 +24,5 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app
+      - /app/node_modules
+      - ollama_data:/data

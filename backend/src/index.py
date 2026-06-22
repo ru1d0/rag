@@ -4,7 +4,7 @@ from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
 
 
-loader = PyPDFLoader("/data/Borrar Nota BBCL v2.pdf")
+loader = PyPDFLoader("/data/pdfs/Borrar Nota BBCL v2.pdf")
 docs = loader.load()
 
 print(f"Documentos cargados: {len(docs)}")

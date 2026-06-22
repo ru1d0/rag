@@ -9,24 +9,66 @@ const mensajes = ref([
 ])
 
 const pregunta = ref('')
+const loading = ref(false)
 
-function enviarMensaje() {
+async function enviarMensaje() {
 
-  if (!pregunta.value.trim()) {
-    return
-  }
+  if (!pregunta.value.trim()) return
 
+  const userMessage = pregunta.value
+
+  // 1. Mostrar mensaje usuario
   mensajes.value.push({
     role: 'user',
-    content: pregunta.value
-  })
-
-  mensajes.value.push({
-    role: 'assistant',
-    content: 'Respuesta de prueba'
+    content: userMessage
   })
 
   pregunta.value = ''
+  loading.value = true
+
+  try {
+
+    const res = await fetch('http://localhost:8000/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message: userMessage })
+    })
+
+    const reader = res.body.getReader()
+    const decoder = new TextDecoder()
+
+    let texto = ""
+
+    mensajes.value.push({
+      role: 'assistant',
+      content: ""
+    })
+
+    const index = mensajes.value.length - 1
+
+    while (true) {
+      const { value, done } = await reader.read()
+      if (done) break
+
+      texto += decoder.decode(value)
+
+      mensajes.value[index].content = texto
+    }
+
+  } catch (error) {
+
+    mensajes.value.push({
+      role: 'assistant',
+      content: 'Error conectando con el backend 😢'
+    })
+
+    console.error(error)
+
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
