@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { onMounted } from 'vue'
 
 const mensajes = ref([
   {
@@ -10,6 +11,7 @@ const mensajes = ref([
 
 const pregunta = ref('')
 const loading = ref(false)
+const pdfs = ref([])
 
 async function enviarMensaje() {
 
@@ -33,7 +35,10 @@ async function enviarMensaje() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ message: userMessage })
+      body: JSON.stringify({ 
+              message: userMessage,
+              history: mensajes.value
+            })
     })
 
     const reader = res.body.getReader()
@@ -70,10 +75,32 @@ async function enviarMensaje() {
     loading.value = false
   }
 }
+
+function abrirPdf(pdf) {
+  window.open(`http://localhost:8000/pdfs/${encodeURIComponent(pdf)}`, '_blank')
+}
+
+onMounted(async () => {
+  const res = await fetch('http://localhost:8000/pdfs')
+  pdfs.value = await res.json()
+})
+
 </script>
 
 <template>
-
+  <div>
+    <aside>
+      <h3>PDFs</h3>
+      <div
+        v-for="pdf in pdfs"
+        :key="pdf"
+        class="pdf-item"
+        @click="abrirPdf(pdf)"
+      >
+        {{  pdf }}
+      </div>
+    </aside>
+  </div>
   <div class="chat">
 
     <h1>Pabloxan</h1>
@@ -115,8 +142,19 @@ body{
   font-family:Arial, sans-serif;
 }
 
+aside {
+  max-width: 300px;
+}
+
+#app {
+    display: flex;
+    padding-left: 44px;
+    padding-right: 44px
+}
+
 .chat{
   max-width:900px;
+  width: 100%;
   margin:auto;
   padding:20px;
 }

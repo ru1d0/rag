@@ -3,28 +3,48 @@ services:
   ollama:
     container_name: ollama
     image: ollama/ollama
+    restart: unless-stopped
+
     ports:
       - "11434:11434"
+
     volumes:
       - ollama_data:/root/.ollama
 
   chatbot:
     container_name: chatbot
-    build: ./backend
+
+    build:
+      context: ./backend
+
+    restart: unless-stopped
+
+    depends_on:
+      - ollama
+
+    env_file:
+      - .env
+
     ports:
       - "8000:8000"
+
     volumes:
-      - ./backend:/app
       - ./data:/data
+      - ./storage:/storage
 
   frontend:
     container_name: frontend
-    build: ./frontend
+
+    build:
+      context: ./frontend
+
+    restart: unless-stopped
+
+    depends_on:
+      - chatbot
+
     ports:
       - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
 
 volumes:
   ollama_data:

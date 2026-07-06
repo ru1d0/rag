@@ -4,12 +4,18 @@ from pydantic import BaseModel
 from src.rag import preguntar_pdf
 from fastapi.responses import StreamingResponse
 import time
+from pathlib import Path
+from fastapi.responses import FileResponse
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+                   "http://localhost:5173",
+                   "http://127.0.0.1:5173",
+                   "http://0.0.0.0:5173"
+                ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -17,16 +23,18 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     message: str
+    history: list = []
 
 @app.get("/")
 def home():
     return {"message": "Hello, World!"}
 
 @app.post("/chat")
-def chat(request: ChatRequest):
+async def chat(request: ChatRequest):
     def generar():
         respuesta = preguntar_pdf(
-            request.message
+            request.message,
+            request.history or []
         )
 
         for palabra in respuesta.split():
@@ -34,3 +42,20 @@ def chat(request: ChatRequest):
             time.sleep(0.05)  
 
     return StreamingResponse(generar(), media_type="text/plain")
+
+@app.get("/pdfs")
+def listar_pdfs():
+
+    carpeta = Path("/data/pdfs")
+
+    return [
+        archivo.name 
+        for archivo in carpeta.glob("*.pdf")
+    ]
+
+@app.get("/pdfs/{filename:path}")
+def obtener_pdf(filename: str):
+    return FileResponse(
+        f"/data/pdfs/{filename}",
+        media_type="application/pdf",
+    )
