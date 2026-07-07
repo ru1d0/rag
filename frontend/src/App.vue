@@ -30,7 +30,7 @@ async function enviarMensaje() {
 
   try {
 
-    const res = await fetch('http://localhost:8000/chat', {
+    const res = await fetch('http://192.168.40.7:8000/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -81,7 +81,7 @@ function abrirPdf(pdf) {
 }
 
 onMounted(async () => {
-  const res = await fetch('http://localhost:8000/pdfs')
+  const res = await fetch('http://192.168.40.7:8000/pdfs')
   pdfs.value = await res.json()
 })
 

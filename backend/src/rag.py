@@ -21,7 +21,7 @@ embeddings = OllamaEmbeddings(
 # Chroma
 
 vectorstore = Chroma(
-    persist_directory="./data/chroma",
+    persist_directory="/storage/chroma",
     embedding_function=embeddings
 )
 

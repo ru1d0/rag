@@ -32,7 +32,7 @@ embeddings = OllamaEmbeddings(
 vectorstore = Chroma.from_documents(
     documents=all_chunks,
     embedding=embeddings,
-    persist_directory="./data/chroma"
+    persist_directory="/storage/chroma"
 )
 
 print("Indexado completado.")
