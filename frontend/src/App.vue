@@ -12,6 +12,7 @@ const mensajes = ref([
 const pregunta = ref('')
 const loading = ref(false)
 const pdfs = ref([])
+const archive = ref(null)
 
 async function enviarMensaje() {
 
@@ -80,25 +81,54 @@ function abrirPdf(pdf) {
   window.open(`http://localhost:8000/pdfs/${encodeURIComponent(pdf)}`, '_blank')
 }
 
+function seleccionarArchivo(event) {
+  archive.value = event.target.files[0]
+}
+
 onMounted(async () => {
   const res = await fetch('http://192.168.40.7:8000/pdfs')
   pdfs.value = await res.json()
 })
+
+async function subirPdf() {
+
+  if (!archive.value) {
+    alert('Por favor selecciona un archivo PDF primero.')
+    return
+  }
+  console.log('Archivo seleccionado:', archive.value)
+  const formData = new FormData()
+  formData.append('file', archive.value)
+
+  try {
+    const res = await fetch('http://localhost:8000/uploadPdf', {
+      method: 'POST',
+      body: formData
+    })
+
+  } catch (error) {
+      console.error('Error al subir el PDF:', error)
+    }
+}
 
 </script>
 
 <template>
   <div>
     <aside>
-      <h3>PDFs</h3>
-      <div
+      <div class="pdf-header">
+        <h3>PDFs</h3>
+        <input id="input-pdf" type="file" accept="application/pdf" @change="seleccionarArchivo"/>
+        <button @click="subirPdf">Subir PDF</button>
+      </div>
+      <span
         v-for="pdf in pdfs"
         :key="pdf"
         class="pdf-item"
         @click="abrirPdf(pdf)"
       >
         {{  pdf }}
-      </div>
+      </span>
     </aside>
   </div>
   <div class="chat">
@@ -146,16 +176,29 @@ aside {
   max-width: 300px;
 }
 
+
+#add-pdf {
+  display: block;
+  margin: auto;
+}
+
 #app {
     display: flex;
     padding-left: 44px;
     padding-right: 44px
 }
 
+.pdf-item {
+  cursor: pointer;
+  display: block;
+  margin-bottom: 8px;
+}
+
 .chat{
   max-width:900px;
   width: 100%;
-  margin:auto;
+  margin-left: auto;
+  margin-right: auto;
   padding:20px;
 }
 
