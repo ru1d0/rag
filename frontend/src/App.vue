@@ -194,7 +194,7 @@ aside {
   margin-bottom: 8px;
 }
 
-.chat{
+.chat {
   max-width:900px;
   width: 100%;
   margin-left: auto;
@@ -202,7 +202,7 @@ aside {
   padding:20px;
 }
 
-.mensajes{
+.mensajes {
   height:70vh;
   overflow-y:auto;
   border:1px solid #ddd;
@@ -210,27 +210,27 @@ aside {
   margin-bottom:10px;
 }
 
-.user{
+.user {
   text-align:right;
   margin:10px;
 }
 
-.assistant{
+.assistant {
   text-align:left;
   margin:10px;
 }
 
-.input-area{
+.input-area {
   display:flex;
   gap:10px;
 }
 
-input{
+input {
   flex:1;
   padding:10px;
 }
 
-button{
+button {
   padding:10px 20px;
 }
 

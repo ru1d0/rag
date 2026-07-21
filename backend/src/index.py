@@ -7,6 +7,7 @@ from langchain_chroma import Chroma
 
 
 carpeta_pdfs = Path("/data/pdfs")
+chroma_path = Path("/storage/chroma")
 
 splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 
@@ -32,7 +33,7 @@ embeddings = OllamaEmbeddings(
 vectorstore = Chroma.from_documents(
     documents=all_chunks,
     embedding=embeddings,
-    persist_directory="/storage/chroma"
+    persist_directory=chroma_path
 )
 
 print("Indexado completado.")
