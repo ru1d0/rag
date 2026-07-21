@@ -4,6 +4,6 @@ langchain-ollama
 langchain-chroma
 chromadb
 pypdf
-
+python-multipart
 fastapi
 uvicorn
