@@ -78,7 +78,7 @@ async function enviarMensaje() {
 }
 
 function abrirPdf(pdf) {
-  window.open(`http://localhost:8000/pdfs/${encodeURIComponent(pdf)}`, '_blank')
+  window.open(`http://192.168.40.7:8000/pdfs/${encodeURIComponent(pdf)}`, '_blank')
 }
 
 function seleccionarArchivo(event) {
@@ -101,7 +101,7 @@ async function subirPdf() {
   formData.append('file', archive.value)
 
   try {
-    const res = await fetch('http://localhost:8000/uploadPdf', {
+    const res = await fetch('http://192.168.40.7:8000/upload', {
       method: 'POST',
       body: formData
     })
