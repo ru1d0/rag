@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from src.rag import preguntar_pdf
@@ -7,7 +7,7 @@ import time
 from pathlib import Path
 from fastapi.responses import FileResponse
 import shutil
-from pdf_indexer import indexar_pdf
+from src.pdf_indexer import indexar_pdf
 
 app = FastAPI()
 PDF_PATH = Path("/data/pdfs")
