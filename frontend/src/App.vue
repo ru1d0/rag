@@ -98,7 +98,7 @@ async function subirPdf() {
   }
   console.log('Archivo seleccionado:', archive.value)
   const formData = new FormData()
-  formData.append('file', archive.value)
+  formData.append('pdf', archive.value)
 
   try {
     const res = await fetch('http://192.168.40.7:8000/upload', {
@@ -228,7 +228,7 @@ aside {
   transform: translateX(-50%);
   width: 877px;
   height: 464px;
-  background-color: #15688F; /* Azul del diseñador */
+  background-color: #15688F;
   border-radius: 50%;
   filter: blur(120px); /* Desenfoque clave para el efecto glow */
   opacity: 0.6; /* Ajusta la intensidad de la luz si lo necesitas */
