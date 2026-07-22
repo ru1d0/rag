@@ -117,7 +117,7 @@ async function subirPdf() {
   <div>
     <aside>
       <div class="pdf-header">
-        <h3>PDFs</h3>
+        <h3>FUENTES</h3>
         <input id="input-pdf" type="file" accept="application/pdf" @change="seleccionarArchivo"/>
         <button @click="subirPdf">Subir PDF</button>
       </div>
@@ -127,13 +127,12 @@ async function subirPdf() {
         class="pdf-item"
         @click="abrirPdf(pdf)"
       >
-        {{  pdf }}
+      <img src="/assets/img/pdf.png" class="pdf-icon"/>
+        {{ pdf }}
       </span>
     </aside>
   </div>
   <div class="chat">
-
-    <h1>Pabloxan</h1>
 
     <div class="mensajes">
 
@@ -142,7 +141,11 @@ async function subirPdf() {
         :key="index"
         :class="mensaje.role"
       >
+      <img class="avatar-assistant" v-if="mensaje.role === 'assistant'" src="/assets/img/pablitoxat.png" alt="Avatar" />
+      <p :class="mensaje.role + '-span'">
         {{ mensaje.content }}
+      </p>
+      <img class="avatar-user" v-if="mensaje.role === 'user'" src="/assets/img/user.png" alt="Avatar" />
       </div>
 
     </div>
@@ -170,10 +173,22 @@ async function subirPdf() {
 body{
   margin:0;
   font-family:Arial, sans-serif;
+  overflow-y: hidden;
+  background-color: #141224;
+}
+
+.pdf-icon {
+  width: 36px;
+  height: 36px;
+  margin-right: 8px;
 }
 
 aside {
-  max-width: 300px;
+  max-width: 319px;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: #FFFFFF;
 }
 
 
@@ -192,6 +207,9 @@ aside {
   cursor: pointer;
   display: block;
   margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chat {
@@ -202,22 +220,79 @@ aside {
   padding:20px;
 }
 
+.input-area::before {
+  content: '';
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 877px;
+  height: 464px;
+  background-color: #15688F; /* Azul del diseñador */
+  border-radius: 50%;
+  filter: blur(120px); /* Desenfoque clave para el efecto glow */
+  opacity: 0.6; /* Ajusta la intensidad de la luz si lo necesitas */
+  z-index: -1; /* Para que quede detrás de todo el contenido */
+  pointer-events: none;
+}
+
 .mensajes {
-  height:70vh;
+  height:80vh;
   overflow-y:auto;
-  border:1px solid #ddd;
   padding:10px;
   margin-bottom:10px;
+  
+}
+
+.assistant-span {
+  background-color:#3D395C;
+  padding:12px;
+  border-radius:8px;
+  color: #FFFFFF;
+  font: sans-serif;
+  font-weight: 400px;
+  font-size: 22px;
+  line-height: 19px;
+  width: fit-content;
+}
+
+.user-span {
+  
+  background-color:#6C6F8E;
+  padding:12px;
+  border-radius:8px;
+  color: #FFFFFF;
+  font: sans-serif;
+  font-weight: 400px;
+  font-size: 22px;
+  line-height: 19px;
 }
 
 .user {
+  display: flex;
+  justify-content: flex-end;
   text-align:right;
-  margin:10px;
+  margin: 10px 10px 60px 10px;
+  align-items: center
 }
 
 .assistant {
   text-align:left;
-  margin:10px;
+  margin: 10px 10px 60px 10px;
+  display: flex;
+  align-items: center;
+}
+
+.avatar-user {
+  width: 60px;
+  height: 56px;
+  margin-left: 12px;
+}
+
+.avatar-assistant {
+  width: 60px;
+  height: 56px;
+  margin-right: 12px;
 }
 
 .input-area {
