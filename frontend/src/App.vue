@@ -188,7 +188,7 @@ async function subirPdf() {
   font: Kokonor;
   font-weight: 400;
   font-style: regular;
-  font-size: 36px;
+  font-size: 24px;
 
 }
 
@@ -306,7 +306,7 @@ aside {
   color: #FFFFFF;
   font: sans-serif;
   font-weight: 400px;
-  font-size: 22px;
+  font-size: 16px;
   line-height: 19px;
   width: fit-content;
 }
@@ -319,7 +319,7 @@ aside {
   color: #FFFFFF;
   font: sans-serif;
   font-weight: 400px;
-  font-size: 22px;
+  font-size: 16px;
   line-height: 19px;
 }
 
@@ -327,13 +327,13 @@ aside {
   display: flex;
   justify-content: flex-end;
   text-align:right;
-  margin: 10px 10px 60px 10px;
+  margin: 10px 10px 20px 10px;
   align-items: center
 }
 
 .assistant {
   text-align:left;
-  margin: 10px 10px 60px 10px;
+  margin: 10px 10px 20px 10px;
   display: flex;
   align-items: center;
 }
