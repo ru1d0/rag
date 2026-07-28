@@ -118,8 +118,6 @@ async function subirPdf() {
     <aside>
       <div class="pdf-header">
         <h3>FUENTES</h3>
-        <input id="input-pdf" type="file" accept="application/pdf" @change="seleccionarArchivo"/>
-        <button @click="subirPdf">Subir PDF</button>
       </div>
       <span
         v-for="pdf in pdfs"
@@ -130,7 +128,17 @@ async function subirPdf() {
       <img src="/assets/img/pdf.png" class="pdf-icon"/>
         {{ pdf }}
       </span>
-    </aside>
+      <input 
+        id="input-pdf" 
+        type="file" 
+        accept="application/pdf" 
+        @change="seleccionarArchivo" 
+      />
+      <label for="input-pdf" class="btn-anadir">
+        <span>añadir archivo</span>
+        <span class="plus-icon">+</span>
+      </label>    
+    </aside>        
   </div>
   <div class="chat">
 
@@ -142,39 +150,86 @@ async function subirPdf() {
         :class="mensaje.role"
       >
       <img class="avatar-assistant" v-if="mensaje.role === 'assistant'" src="/assets/img/pablitoxat.png" alt="Avatar" />
-      <p :class="mensaje.role + '-span'">
+      <p v-if="mensaje.content" :class="mensaje.role + '-span'">
         {{ mensaje.content }}
       </p>
+      <div v-if="mensaje.role === 'assistant' && loading && index === mensajes.length - 1" class="typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
       <img class="avatar-user" v-if="mensaje.role === 'user'" src="/assets/img/user.png" alt="Avatar" />
       </div>
 
     </div>
 
     <div class="input-area">
-
-      <input
-        v-model="pregunta"
-        @keyup.enter="enviarMensaje"
-        placeholder="Escribe tu pregunta..."
-      />
-
-      <button @click="enviarMensaje">
-        Enviar
-      </button>
-
+      <div class="input-box">
+        <input
+          v-model="pregunta"
+          @keyup.enter="enviarMensaje"
+          placeholder="Escribe tu pregunta..."
+        />
+        <button @click="enviarMensaje" class="btn-send">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
     </div>
-
   </div>
 
 </template>
 
 <style>
 
+.pdf-header h3 {
+  font: Kokonor;
+  font-weight: 400;
+  font-style: regular;
+  font-size: 36px;
+
+}
+
 body{
   margin:0;
   font-family:Arial, sans-serif;
   overflow-y: hidden;
   background-color: #141224;
+}
+
+#input-pdf {
+  display: none;
+}
+
+.btn-anadir {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1a2332;
+  color: #a0aab8;           
+  padding: 10px 20px;
+  border-radius: 25px;      
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+  transition: background-color 0.2s ease;
+  width: 100%;              
+  box-sizing: border-box;
+  margin: 54px 0px;
+}
+
+.btn-anadir:hover {
+  background-color: #232e42;
+  color: #ffffff;
+}
+
+.plus-icon {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 1;
 }
 
 .pdf-icon {
@@ -230,9 +285,9 @@ aside {
   height: 464px;
   background-color: #15688F;
   border-radius: 50%;
-  filter: blur(120px); /* Desenfoque clave para el efecto glow */
-  opacity: 0.6; /* Ajusta la intensidad de la luz si lo necesitas */
-  z-index: -1; /* Para que quede detrás de todo el contenido */
+  filter: blur(120px);
+  opacity: 0.6;
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -305,8 +360,98 @@ input {
   padding:10px;
 }
 
+.input-area {
+  width: 100%;
+}
+
+/* La cápsula/píldora oscura contenedora */
+.input-box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #171725; /* Tono oscuro del diseño */
+  border-radius: 50px;       /* Forma ovalada */
+  padding: 6px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Quitar bordes y fondo al input nativo */
+.input-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.input-box input::placeholder {
+  color: #6c727f;
+}
+
+/* Quitar bordes y fondo al botón para mostrar solo el icono */
+.btn-send {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-send:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
 button {
   padding:10px 20px;
+}
+/* Indicador de escritura (Typing Indicator) */
+.typing-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 2px;
+}
+
+.typing-indicator span {
+  width: 6px;
+  height: 6px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.4;
+  animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+/* Retrasos para generar el efecto en ola/cascada */
+.typing-indicator span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Keyframes de la animación */
+@keyframes typingBounce {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 </style>
