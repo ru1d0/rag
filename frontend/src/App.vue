@@ -15,6 +15,10 @@ const loading = ref(false)
 const pdfs = ref([])
 const archive = ref(null)
 
+function renderMarkdown(text) {
+  return marked.parse(text)
+}
+
 async function enviarMensaje() {
 
   if (!pregunta.value.trim()) return
@@ -30,9 +34,6 @@ async function enviarMensaje() {
   pregunta.value = ''
   loading.value = true
 
-  function renderMarkdown(text) {
-    return marked.parse(text)
-  }
 
   try {
 
@@ -65,7 +66,7 @@ async function enviarMensaje() {
 
       texto += decoder.decode(value)
 
-      mensajes.value[index].content = renderMarkdown(texto)
+      mensajes.value[index].content = texto
     }
 
   } catch (error) {
