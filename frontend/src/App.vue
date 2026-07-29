@@ -156,8 +156,7 @@ async function subirPdf() {
         :class="mensaje.role"
       >
       <img class="avatar-assistant" v-if="mensaje.role === 'assistant'" src="/assets/img/pablitoxat.png" alt="Avatar" />
-      <p v-if="mensaje.content" :class="mensaje.role + '-span'">
-        {{ renderMarkdown(mensaje.content) }}
+      <p v-if="mensaje.content" :class="mensaje.role + '-span'" v-html="renderMarkdown(mensaje.content)">
       </p>
       <div v-if="mensaje.role === 'assistant' && loading && index === mensajes.length - 1" class="typing-indicator">
         <span></span>
