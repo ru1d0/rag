@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { onMounted } from 'vue'
+import { marked } from 'marked'
 
 const mensajes = ref([
   {
@@ -28,6 +29,10 @@ async function enviarMensaje() {
 
   pregunta.value = ''
   loading.value = true
+
+  function renderMarkdown(text) {
+    return marked.parse(text)
+  }
 
   try {
 
@@ -60,7 +65,7 @@ async function enviarMensaje() {
 
       texto += decoder.decode(value)
 
-      mensajes.value[index].content = texto
+      mensajes.value[index].content = renderMarkdown(texto)
     }
 
   } catch (error) {
@@ -151,7 +156,7 @@ async function subirPdf() {
       >
       <img class="avatar-assistant" v-if="mensaje.role === 'assistant'" src="/assets/img/pablitoxat.png" alt="Avatar" />
       <p v-if="mensaje.content" :class="mensaje.role + '-span'">
-        {{ mensaje.content }}
+        {{ renderMarkdown(mensaje.content) }}
       </p>
       <div v-if="mensaje.role === 'assistant' && loading && index === mensajes.length - 1" class="typing-indicator">
         <span></span>
