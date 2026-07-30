@@ -83,11 +83,22 @@ def preguntar_pdf(pregunta: str, history: list = []):
         [doc.page_content for doc in docs]
     )
 
+    prompt_rag = f"""
+    HISTORIAL:
+
+    {historial}
+
+    CONTEXTO:
+
+    {contexto}
+
+    PREGUNTA:
+
+    {pregunta}
+    """
 
     respuesta = chain.invoke({
-        "history": historial,
-        "context": contexto,
-        "question": pregunta
+        "input": prompt_rag
     })
 
     return respuesta.content
