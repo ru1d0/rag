@@ -10,6 +10,11 @@ const mensajes = ref([
   }
 ])
 
+marked.setOptions({
+  breaks: true,
+  gfm: true
+})
+
 const pregunta = ref('')
 const loading = ref(false)
 const pdfs = ref([])
