@@ -348,6 +348,15 @@ aside {
   align-items: center;
 }
 
+.assistant a {
+  color: #33D1FF;
+  text-decoration: underline;
+} 
+
+.assistant a:hover {
+  color: #6BE2FF;
+}
+
 .avatar-user {
   width: 60px;
   height: 56px;
