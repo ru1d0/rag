@@ -41,9 +41,11 @@ async def chat(request: ChatRequest):
             request.history or []
         )
 
-        for palabra in respuesta:
-            yield palabra + " "
-            time.sleep(0.05)  
+        chunk_size = 32
+
+        for i in range(0, len(respuesta), chunk_size):
+            yield respuesta[i:i + chunk_size]
+            time.sleep(0.01)
 
     return StreamingResponse(generar(), media_type="text/plain")
 
