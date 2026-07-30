@@ -54,9 +54,9 @@ template = ChatPromptTemplate.from_messages([
         Formato de respuesta:
 
         - Responde SIEMPRE utilizando Markdown válido.
-        - Deja una línea en blanco entre párrafos.
+        - Usa salto de línea entre párrafos (<br>).
         - Utiliza títulos (## o ###) cuando existan pasos o secciones.
-        - Utiliza listas con "-" o numeradas cuando corresponda.
+        - Utiliza listas con "-" o numeradas cuando corresponda (li o ul).
         - Todo comando debe ir dentro de un bloque de código Markdown.
         """
     ),
