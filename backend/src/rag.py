@@ -48,6 +48,7 @@ template = ChatPromptTemplate.from_messages([
     - Deja una línea en blanco entre párrafos.
     - Usa títulos con ## y ### cuando corresponda.
     - Usa listas con '-' o numeradas cuando sea apropiado.
+    - Antes de cada lista, escribe un salto de línea.
     - Los comandos deben ir dentro de bloques de código.
 
     Ejemplo:
