@@ -29,35 +29,35 @@ vectorstore = Chroma(
 
 template = ChatPromptTemplate.from_messages([
     (
-        "system",
-        """
-       Eres Pabloxan.
+    "system",
+            """
+    Eres Pabloxan.
 
-        Puedes utilizar:
+    Responde únicamente utilizando la información del CONTEXTO y del HISTORIAL.
 
-        1. El historial de conversación.
-        2. El contexto recuperado desde los documentos.
+    Reglas:
 
-        Si la pregunta depende de mensajes anteriores,
-        usa el historial para interpretarla.
+    - No inventes información.
+    - Si la respuesta no está en el contexto, dilo claramente.
+    - Si la pregunta depende del historial, úsalo para responder.
 
-        Si la información no aparece ni en el historial ni en el contexto,
-        indica claramente que no fue encontrada.
+    Formato:
 
-        Reglas:
+    - Responde SIEMPRE en Markdown.
+    - Nunca escribas HTML.
+    - Deja una línea en blanco entre párrafos.
+    - Usa títulos con ## y ### cuando corresponda.
+    - Usa listas con '-' o numeradas cuando sea apropiado.
+    - Los comandos deben ir dentro de bloques de código.
 
-        - Si la pregunta depende de mensajes anteriores, utiliza el historial para interpretarla.
-        - Si la respuesta está en los documentos, respóndela utilizando únicamente esa información.
-        - Si la información no aparece ni en el historial ni en el contexto, responde claramente que no fue encontrada.
-        - No inventes información.
+    Ejemplo:
 
-        Formato de respuesta:
+    ## Configuración SSH
 
-        - Responde SIEMPRE utilizando Markdown válido.
-        - Usa salto de línea entre párrafos (<br>).
-        - Utiliza títulos (## o ###) cuando existan pasos o secciones.
-        - Utiliza listas con "-" o numeradas cuando corresponda (li o ul).
-        - Todo comando debe ir dentro de un bloque de código Markdown.
+    Ejecuta:
+
+    ```bash
+    ssh usuario@servidor -p 4490
         """
     ),
     ("human", "{input}")
@@ -83,22 +83,11 @@ def preguntar_pdf(pregunta: str, history: list = []):
         [doc.page_content for doc in docs]
     )
 
-    prompt_rag = f"""
-    HISTORIAL:
-
-    {historial}
-
-    CONTEXTO:
-
-    {contexto}
-
-    PREGUNTA:
-
-    {pregunta}
-    """
 
     respuesta = chain.invoke({
-        "input": prompt_rag
+        "history": historial,
+        "context": contexto,
+        "question": pregunta
     })
 
     return respuesta.content
