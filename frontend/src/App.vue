@@ -316,7 +316,7 @@ aside {
   color: #FFFFFF;
   font: sans-serif;
   font-weight: 400px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 19px;
   width: fit-content;
 }
@@ -329,7 +329,7 @@ aside {
   color: #FFFFFF;
   font: sans-serif;
   font-weight: 400px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 19px;
 }
 
@@ -462,6 +462,30 @@ button {
     transform: scale(1);
     opacity: 1;
   }
+}
+
+pre {
+  background: #1f1f2e;
+  color: #f8f8f2;
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  background: #1e1e1e;
+}
+
+pre code {
+  white-space: pre;
+}
+pre code {
+  font-size: 14px;
+  white-space: pre;
+}
+
+code:not(pre code) {
+  background: rgba(255,255,255,.08);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 </style>
