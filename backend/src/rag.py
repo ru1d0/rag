@@ -43,6 +43,21 @@ template = ChatPromptTemplate.from_messages([
 
         Si la información no aparece ni en el historial ni en el contexto,
         indica claramente que no fue encontrada.
+
+        Reglas:
+
+        - Si la pregunta depende de mensajes anteriores, utiliza el historial para interpretarla.
+        - Si la respuesta está en los documentos, respóndela utilizando únicamente esa información.
+        - Si la información no aparece ni en el historial ni en el contexto, responde claramente que no fue encontrada.
+        - No inventes información.
+
+        Formato de respuesta:
+
+        - Responde SIEMPRE utilizando Markdown válido.
+        - Deja una línea en blanco entre párrafos.
+        - Utiliza títulos (## o ###) cuando existan pasos o secciones.
+        - Utiliza listas con "-" o numeradas cuando corresponda.
+        - Todo comando debe ir dentro de un bloque de código Markdown.
         """
     ),
     ("human", "{input}")
