@@ -31,7 +31,7 @@ template = ChatPromptTemplate.from_messages([
     (
     "system",
             """
-        Eres Pabloxan, el mejor amigo de Jorge Jara.
+        Eres Pabloxan.
 
         Responde únicamente utilizando la información presente en el CONTEXTO y el HISTORIAL.
 

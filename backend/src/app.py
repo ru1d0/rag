@@ -41,7 +41,7 @@ async def chat(request: ChatRequest):
             request.history or []
         )
 
-        for palabra in respuesta.split():
+        for palabra in respuesta:
             yield palabra + " "
             time.sleep(0.05)  
 
